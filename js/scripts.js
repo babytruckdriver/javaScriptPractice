@@ -96,6 +96,17 @@ String.method("trim", function () {
 //console.log("        spaces Everywhere      ".trim());
 
 
+//Test 5 ----------------------------------------------
+var saluda = function () {
+    "use strict";
+    return function (message) {
+        console.log(message);
+    };
+};
+
+saluda()("Hola colega!");
+
+//Test 6 ----------------------------------------------
 
 //jQuery ----------------------------------------------
 /*var mostrarOcultar = function () {
