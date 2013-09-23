@@ -100,13 +100,31 @@ String.method("trim", function () {
 var saluda = function () {
     "use strict";
     return function (message) {
-        console.log(message);
+        //console.log(message);
     };
 };
 
 saluda()("Hola colega!");
 
 //Test 6 ----------------------------------------------
+var Aobj = (function () {
+    "use strict";
+    var name = "";
+    var age = 0;
+    return {
+        getName: function () {
+            return name;
+        },
+        setName: function (oName) {
+            name = oName;
+        }
+    };
+}()); //Ojo: Se invoca a la función justo después de declararla.
+
+Aobj.setName("samuel");
+console.log(Aobj.getName());
+
+
 
 //jQuery ----------------------------------------------
 /*var mostrarOcultar = function () {
