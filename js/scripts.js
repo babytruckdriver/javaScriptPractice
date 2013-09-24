@@ -122,8 +122,38 @@ var Aobj = (function () {
 }()); //Ojo: Se invoca a la función justo después de declararla.
 
 Aobj.setName("samuel");
-console.log(Aobj.getName());
+//console.log(Aobj.getName());
 
+//Test 7 ----------------------------------------------
+// Define a function that sets a DOM node's color
+// to yellow and then fades it to white.
+var fade = function (node) {
+    "use strict";
+    var level = 1;
+    var step = function () {
+        var hex = level.toString(16);
+        console.log(hex);
+        node.style.backgroundColor = '#FFFF' + hex + hex;
+        if (level < 15) {
+            level += 1;
+            setTimeout(step, 100);
+        }
+    };
+    setTimeout(step, 100);
+};
+//fade(document.body);
+
+//Test 8 ----------------------------------------------
+var add_the_handlers = function (nodes) {
+    "use strict";
+    var i;
+    for (i = 0; i < nodes.length; i += 1) {
+        nodes[i].onclick = function (e) {
+            alert(i);
+        };
+    }
+};
+add_the_handlers(document.body.childNodes);
 
 
 //jQuery ----------------------------------------------
