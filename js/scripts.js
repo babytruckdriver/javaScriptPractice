@@ -148,9 +148,11 @@ var add_the_handlers = function (nodes) {
     "use strict";
     var i;
     for (i = 0; i < nodes.length; i += 1) {
-        nodes[i].onclick = function (e) {
-            alert(i);
-        };
+        nodes[i].onclick = (function (num) {
+            return function (e) {
+                alert(num);
+            };
+        }(i));
     }
 };
 add_the_handlers(document.body.childNodes);
