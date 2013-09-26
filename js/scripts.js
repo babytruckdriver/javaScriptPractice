@@ -155,7 +155,28 @@ var add_the_handlers = function (nodes) {
         }(i));
     }
 };
-add_the_handlers(document.body.childNodes);
+//add_the_handlers(document.body.childNodes);
+
+//Test 9 ----------------------------------------------
+String.method('deentityify', (function () {
+// The entity table. It maps entity names to
+// characters.
+    "use strict";
+    var entity = {
+        quot: '"',
+        lt:  '<',
+        gt: '>'
+    };
+// Return the deentityify method.
+    return function () {
+        return this.replace(/&([^&;]+);/g,
+            function (a, b) {
+                var r = entity[b];
+                return typeof r === 'string' ? r : a;
+            });
+    };
+}()));
+console.log('&lt;&quot;&gt;'.deentityify());
 
 
 //jQuery ----------------------------------------------
