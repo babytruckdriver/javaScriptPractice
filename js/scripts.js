@@ -176,7 +176,20 @@ String.method('deentityify', (function () {
             });
     };
 }()));
-console.log('&lt;&quot;&gt;'.deentityify());
+//console.log('&lt;&quot;&gt;'.deentityify());
+//Test 10 ---------------------------------------------
+var aObj = {
+    name: "Icíar",
+    age: 0.4,
+    hight: null
+};
+/*console.log("'aObj.hight' is 'null': " + aObj.hight);
+console.log("'aObj.aPropertie' is 'undefined': " + aObj.aPropertie);
+console.log("'null' es igual a 'undefined': " + (null == undefined));
+if (aObj.aPropertie == null) {
+    console.log("Aparezco da igual si 'aPropertie' es 'null' o 'undefined'");
+}*/
+//Test 11 ---------------------------------------------
 
 
 //jQuery ----------------------------------------------
