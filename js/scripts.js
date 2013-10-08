@@ -191,6 +191,55 @@ if (aObj.aPropertie == null) {
 }*/
 //Test 11 ---------------------------------------------
 
+/*var call_back = function (name, age, anounce) {
+    "use strict";
+    var concat = name + ": " + age;
+    anounce("I have done!");
+    console.log("Execution continue...");
+};
+            
+call_back("Icíar", 0.4, function (message) {
+    "use strict";
+    var i = 0;
+    var concat = "";
+    while (i < 1500000) {
+        concat += i;
+        i++;
+    }
+    console.log(message);
+});*/
+
+//Test 12 ---------------------------------------------
+
+function Animal() {
+    "use strict";
+}
+
+Animal.prototype = {
+    nombre: "",
+    edad: "",
+    toString: function () {
+        "use strict";
+        return this.nombre + " :: " + this.edad;
+    }
+};
+
+var tato = new Animal();
+tato.nombre = "Er Tato";
+
+Animal.prototype = {
+    toString: function () {
+        "use strict";
+        return '...';
+    }
+};
+
+var moli = new Animal();
+moli.nombre = "La Moli";
+console.log(tato.toString());
+console.log(moli.toString());
+
+
 
 //jQuery ----------------------------------------------
 /*var mostrarOcultar = function () {
