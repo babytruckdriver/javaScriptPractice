@@ -236,6 +236,7 @@ Animal.prototype = {
 
 var moli = new Animal();
 moli.nombre = "La Moli";
+
 console.log(tato.toString());
 console.log(moli.toString());
 
