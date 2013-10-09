@@ -211,35 +211,39 @@ call_back("Icíar", 0.4, function (message) {
 
 //Test 12 ---------------------------------------------
 
-function Animal() {
+var Animal = function () {
+    this.name = "";
+};
+
+Animal.prototype.surname = "No surname";
+Animal.prototype.getName = function () {
     "use strict";
-}
+    return this.name;
+};
+
+Animal.prototype.getSurname = function () {
+    "use strict";
+    return this.surname;
+};
+
+var perro = new Animal();
+perro.name = "Dodo";
+perro.surname = "Todo";
 
 Animal.prototype = {
-    nombre: "",
-    edad: "",
-    toString: function () {
+    getName: function () {
         "use strict";
-        return this.nombre + " :: " + this.edad;
+        return "pringao!!!";
     }
 };
 
-var tato = new Animal();
-tato.nombre = "Er Tato";
+var gato = new Animal();
+gato.name = "Peter";
 
-Animal.prototype = {
-    toString: function () {
-        "use strict";
-        return '...';
-    }
-};
+console.log(perro.getSurname());
+console.log(gato.getSurname()); //getSurname no existe para 'gato'
 
-var moli = new Animal();
-moli.nombre = "La Moli";
-
-console.log(tato.toString());
-console.log(moli.toString());
-
+//Test 13 ---------------------------------------------
 
 
 //jQuery ----------------------------------------------
