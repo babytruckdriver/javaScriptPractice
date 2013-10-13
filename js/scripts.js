@@ -265,30 +265,45 @@ Animal.prototype = {
 var gato = new Animal();
 gato.name = "Peter";
 
-console.log(perro.getSurname());
+//console.log(perro.getSurname());
 //console.log(gato.getSurname()); //getSurname no existe para 'gato'
 
 //Test 13 ---------------------------------------------
-var Thing = function () {
+var Thing = function (name) {
     "use strict";
-    this.name = "";
-    this.getName = function () {
-        return this.name;
-    };
+    this.name = name;
 };
 
 
 Thing.prototype = {
-    getInfo: function () {
+    getName: function () {
         "use strict";
-        return "Info about Thing";
+        return this.name;
+    },
+    setName: function (name) {
+        "use strict";
+        console.log("In the father method..");
+        this.name = name;
     }
 };
 
-var cosa = new Thing();
-cosa.name = "mariposa";
-console.log(Thing.prototype);
-console.log(console.dump());
+var AnotherThing = function (name) {
+    "use strict";
+    this.name = name;
+};
+
+AnotherThing.prototype = new Thing();
+AnotherThing.prototype.setName = function (name) {
+    "use strict";
+    console.log("I'm in the child method");
+    Thing.prototype.setName.apply(this, arguments);
+    console.log(arguments);
+};
+
+var aThing = new AnotherThing("osos");
+aThing.setName("dogs");
+
+//Test 14 ---------------------------------------------
 
 
 
