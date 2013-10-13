@@ -2,6 +2,30 @@
 /*jslint browser: true, vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4 */
 /*global $, console */
 
+// Avoid `console` errors in browsers that lack a console.
+(function () {
+    "use strict";
+    var method;
+    var noop = function () {};
+    var methods = [
+        'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+        'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+        'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+        'timeStamp', 'trace', 'warn'
+    ];
+    var length = methods.length;
+    var console = (window.console = window.console || {});
+
+    while (length--) {
+        method = methods[length];
+
+        // Only stub undefined methods.
+        if (!console[method]) {
+            console[method] = noop;
+        }
+    }
+}());
+
 //Test 1 ----------------------------------------------
 var cVuelo = {
         value: 0,
@@ -147,13 +171,13 @@ var fade = function (node) {
 var add_the_handlers = function (nodes) {
     "use strict";
     var i;
-    for (i = 0; i < nodes.length; i += 1) {
+    /*for (i = 0; i < nodes.length; i += 1) {
         nodes[i].onclick = (function (num) {
             return function (e) {
                 alert(num);
             };
         }(i));
-    }
+    }*/
 };
 //add_the_handlers(document.body.childNodes);
 
@@ -212,6 +236,7 @@ call_back("Icíar", 0.4, function (message) {
 //Test 12 ---------------------------------------------
 
 var Animal = function () {
+    "use strict";
     this.name = "";
 };
 
@@ -241,9 +266,30 @@ var gato = new Animal();
 gato.name = "Peter";
 
 console.log(perro.getSurname());
-console.log(gato.getSurname()); //getSurname no existe para 'gato'
+//console.log(gato.getSurname()); //getSurname no existe para 'gato'
 
 //Test 13 ---------------------------------------------
+var Thing = function () {
+    "use strict";
+    this.name = "";
+    this.getName = function () {
+        return this.name;
+    };
+};
+
+
+Thing.prototype = {
+    getInfo: function () {
+        "use strict";
+        return "Info about Thing";
+    }
+};
+
+var cosa = new Thing();
+cosa.name = "mariposa";
+console.log(Thing.prototype);
+console.log(console.dump());
+
 
 
 //jQuery ----------------------------------------------
