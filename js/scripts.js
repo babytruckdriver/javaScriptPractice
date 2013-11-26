@@ -282,7 +282,7 @@ Thing.prototype = {
     },
     setName: function (name) {
         "use strict";
-        console.log("In the father method..");
+        //console.log("In the father method..");
         this.name = name;
     }
 };
@@ -295,15 +295,67 @@ var AnotherThing = function (name) {
 AnotherThing.prototype = new Thing();
 AnotherThing.prototype.setName = function (name) {
     "use strict";
-    console.log("I'm in the child method");
+    //console.log("I'm in the child method");
     Thing.prototype.setName.apply(this, arguments);
-    console.log(arguments);
+    //console.log(arguments);
 };
 
 var aThing = new AnotherThing("osos");
 aThing.setName("dogs");
 
 //Test 14 ---------------------------------------------
+var Some = function (name, value) {
+    "use strict";
+    if (this instanceof Some) {
+        this.name = name;
+        this.value = value;
+        this.getString = function () { return this.name + " :: " + this.value; };
+    } else {
+        return {
+            name: name,
+            value: value,
+            getString: function () { return name + " :: " + value; }
+        };
+    }
+};
+
+//var aSome = Some("Icíar", "Cansina"); //Puedes crear una nueva instacia de Some sin poner la palabra new
+//console.log(aSome.getString());
+
+//Test 15 ---------------------------------------------
+var Add = function (x, y) {
+    "use strict";
+    var internalVar = 0.2;
+    this.a = "Icíar";
+    var internalFunction = function (param) {
+        //console.log(internalVar + " " + param + " " + this.a);  
+    };
+    internalFunction.call(this, "parámetro");
+    return x + y;
+};
+
+var addObj = new Add(1, 2);
+
+//Test 16 ---------------------------------------------
+var combine = function (fn1, fn2) {
+    "use strict";
+    return function (x) {
+        return fn1(fn2(x));
+    };
+};
+
+var sumaUno = function (n) {
+    "use strict";
+    return n + 1;
+};
+
+var doble = function (n) {
+    "use strict";
+    return n * 2;
+};
+
+var sumaUnoDoble = combine(doble, sumaUno);
+console.log(sumaUnoDoble(2));
 
 
 

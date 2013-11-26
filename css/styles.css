@@ -51,9 +51,12 @@ header{
     cursor: pointer;
 }
 
-#menu{
+.menu{
     list-style-type: disc;
+    color: red;
+    opacity: 1;
 }
+
 
 #contenido{
     list-style-type: none;
