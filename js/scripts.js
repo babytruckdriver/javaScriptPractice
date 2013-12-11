@@ -355,8 +355,48 @@ var doble = function (n) {
 };
 
 var sumaUnoDoble = combine(doble, sumaUno);
-console.log(sumaUnoDoble(2));
+//console.log(sumaUnoDoble(2));
 
+//Test 17 ---------------------------------------------
+var nombre = "Icíar";
+
+(function (nombre) {
+    "use strict";
+    nombre = "Samuel";
+    return false;
+}(nombre));
+
+//En JavasScript los parámetros se pasan por valor, no por referencia
+//console.log(nombre);
+
+//Test 18 ---------------------------------------------
+var fnTest = function (a, b) {
+    "use strict";
+    return arguments;
+};
+
+var argumentsArr = Array.prototype.slice.call(fnTest(1, 2), 0);
+//console.log(argumentsArr);
+
+//Test 19 ---------------------------------------------
+var __slice = Array.prototype.slice;
+
+function llamaConPrimerArgumento(fn, argumento) {
+    "use strict";
+    return function casavieja() {
+        var args = __slice.call(arguments, 0);
+        return fn.apply(this, [argumento].concat(args));
+    };
+}
+
+var saluda = function (yo, tu) {
+    "use strict";
+    return "Hola, " + tu + ", mi nombre es " + yo;
+};
+
+var cristinaDiHola = llamaConPrimerArgumento(saluda, "Cristina");
+
+console.log(cristinaDiHola("Samuel"));
 
 
 //jQuery ----------------------------------------------
