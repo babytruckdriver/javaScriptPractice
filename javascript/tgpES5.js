@@ -37,7 +37,7 @@ var cVuelo = {
             "use strict";
             this.value += typeof inc === "number" ? inc : 1;
         }
-        
+
     };
 
 cVuelo.increment();
@@ -50,10 +50,10 @@ cVuelo.double = function () {
     "use strict";
     var that = this;
     var helper = function () {
-        
+
             that.value = that.value * 2;
         };
-    
+
     helper();
 };
 
@@ -63,7 +63,7 @@ cVuelo.double();
 //Test 2 over Test1 -----------------------------------
 Object.prototype.makeLogString = function () {
     "use strict";
-    
+
     var name, result = "";
     for (name in this) {
         if (typeof this[name] !== "function" && this.hasOwnProperty(name)) {
@@ -80,23 +80,23 @@ var Class = function (vel, dist) {
     "use strict";
     var _velocidad = vel;
     var _distancia = dist;
-    
+
     this.getVelocidad = function () {
         return _velocidad;
     };
-    
+
     this.getDistancia = function () {
         return _distancia;
     };
-    
+
     this.setVelocidad = function (vel) {
         _velocidad = vel;
     };
-    
+
     this.setDistancia = function (dist) {
         _distancia = dist;
     };
-    
+
 };
 
 var myClass = new Class(12, 45);
@@ -221,7 +221,7 @@ if (aObj.aPropertie == null) {
     anounce("I have done!");
     console.log("Execution continue...");
 };
-            
+
 call_back("Icíar", 0.4, function (message) {
     "use strict";
     var i = 0;
@@ -328,7 +328,7 @@ var Add = function (x, y) {
     var internalVar = 0.2;
     this.a = "Icíar";
     var internalFunction = function (param) {
-        //console.log(internalVar + " " + param + " " + this.a);  
+        //console.log(internalVar + " " + param + " " + this.a);
     };
     internalFunction.call(this, "parámetro");
     return x + y;
