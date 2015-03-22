@@ -14,6 +14,8 @@ define([], function () {
                 init: function () {
                         //this.promiseSinc();
                         //this.promiseAsinc();
+                        //this.generatorSecuence();
+                        this.generatorAsinc();
                         //this.objDestructuring();
                         //this.arrDestructuring();
                         //this.letItGo();
@@ -22,6 +24,72 @@ define([], function () {
                         //this.arrowOp();
 
                 }
+        };
+
+        App.generatorAsinc = function ()  {
+
+                // Generadores: Una vez devuelto el control vía yield a la parte de código desde
+                // donde se invocó el .next(), el siguiente .next(value) puede enviar un valor que
+                // puede ser recogido (en este caso por la variable 'res') y continuar la ejecución
+                // de la función.
+
+                // TODO: La utilidad de esto parece que es la ejecución de código de forma asíncrona
+                // pero todavía no he entindido cómo.
+
+                var demo = function* () {
+                        var res = yield 10;
+                        if(res === 32) {
+                                return 42;
+                        }
+                };
+
+                var d = demo();
+                var resA = d.next();
+                console.log(resA);
+
+                var resB = d.next(32);
+                console.log(resB);
+
+        };
+
+        App.generatorSecuence = function () {
+
+                // Generadores: Funciones que devuelven vía 'yield' y quedan en ese punto
+                // en Standby hasta que se vuelve a invocar en un 'for of' o .next()
+                // Esto posibilita la creación de lista muy grandes o potencialmente infinitas.
+
+                var idMaker = function* (n) {
+                        var i = 0;
+
+                        // FIX: ¿De qué manera se prodría mejorar este código para no repetir dos veces
+                        // casi exactamente el mimso bucle
+                        if(n) {
+                                while (i < n) {
+                                        yield i;
+                                        i++;
+                                }
+                        } else {
+                                while (true) {
+                                        yield i;
+                                        i++;
+                                }
+                        }
+
+                };
+
+                for (var id of idMaker(3)) {
+                        console.log(id);
+                }
+
+                let idGenerator = idMaker();
+
+                console.log(idGenerator.next());
+                console.log(idGenerator.next());
+                console.log(idGenerator.next());
+                console.log(idGenerator.next());
+                console.log(idGenerator.next());
+                console.log(idGenerator.next()); // {value: i, done: false}
+
         };
 
         App.promiseAsinc = function () {
