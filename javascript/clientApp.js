@@ -33,14 +33,12 @@ define([], function () {
                 // puede ser recogido (en este caso por la variable 'res') y continuar la ejecución
                 // de la función.
 
-
-                console.time("timer");
-
-                for( let i = 0; i < 1E10; i++) {
+                function tardo () {
+                        console.time("timer");
+                        for( let i = 0; i < 1E10; i++) {
+                        };
+                        console.timeEnd("timer");
                 };
-
-                console.timeEnd("timer");
-
                 /*
                 function request(url) {
                         // this is where we're hiding the asynchronicity,
