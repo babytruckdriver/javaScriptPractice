@@ -14,8 +14,8 @@ define([], function () {
                 init: function () {
                         //this.promiseSinc();
                         //this.promiseAsinc();
-                        //this.generatorSecuence();
-                        this.generatorAsinc();
+                        //this.generatorIterator();
+                        //this.generatorAsinc();
                         //this.objDestructuring();
                         //this.arrDestructuring();
                         //this.letItGo();
@@ -35,24 +35,35 @@ define([], function () {
 
                 // TODO: La utilidad de esto parece que es la ejecución de código de forma asíncrona
                 // pero todavía no he entindido cómo.
+                /*
+                function request(url) {
+                        // this is where we're hiding the asynchronicity,
+                        // away from the main code of our generator
+                        // `it.next(..)` is the generator's iterator-resume
+                        // call
+                        makeAjaxCall(url, function (response) {
+                                it.next(response);
+                        });
+                        // Note: nothing returned here!
+                }
 
-                var demo = function* () {
-                        var res = yield 10;
-                        if(res === 32) {
-                                return 42;
-                        }
-                };
+                function* main() {
+                        var result1 =
+                                yield request("http://some.url.1");
+                        var data = JSON.parse(result1);
 
-                var d = demo();
-                var resA = d.next();
-                console.log(resA);
+                        var result2 =
+                                yield request("http://some.url.2?id=" + data.id);
+                        var resp = JSON.parse(result2);
+                        console.log("The value you asked for: " + resp.value);
+                }
 
-                var resB = d.next(32);
-                console.log(resB);
+                var it = main();
+                it.next(); // get it all started*/
 
         };
 
-        App.generatorSecuence = function () {
+        App.generatorIterator = function () {
 
                 // Generadores: Funciones que devuelven vía 'yield' y quedan en ese punto
                 // en Standby hasta que se vuelve a invocar en un 'for of' o .next()
@@ -94,7 +105,7 @@ define([], function () {
 
         App.promiseAsinc = function () {
 
-                //Promesas: enlazar promesas de forma asíncrona (evaluarlas a la vez) vía secuencias
+                // Promesas: enlazar promesas de forma asíncrona (evaluarlas a la vez) vía secuencias
 
                 console.log("Comienza la ejecución del método.");
 
@@ -120,7 +131,9 @@ define([], function () {
 
         App.promiseSinc = function () {
 
-                //Promesas: enlazar promesas de forma síncrona y recoger errores
+                // Promesas: enlazar promesas de forma síncrona y recoger errores
+                // Las APIS modernas ya trabajan con promesas, por lo que crear una a mano, como en este ejemplo
+                // es raro.
 
                 console.log("Comienza la ejecución del método.");
 
