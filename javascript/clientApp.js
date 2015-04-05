@@ -36,13 +36,17 @@ define([], function () {
                 function Future() {
                         // Lista de subcriptores pendientes
                         this.slots = [];
+                        this.id = String.prototype.slice.call(Date.now(), 11, 13);
+                        console.log("Creado el Futuro " + this.id);
                 }
 
-                // Notificar terminación (completion)
+                // Agregar suscriptores a los que notificar cuando se resuelva el Futuro
                 Future.prototype.ready = function (slot) {
                         if (this.completed) {
+                                console.log("El Futuro está completo. No hace falta suscribirse. Ejecuto función que pedía la suscripción.");
                                 slot(this.value);
                         } else {
+                                console.log("Suscripción añadida al Futuro: " +  this.id);
                                 this.slots.push(slot);
                         }
                 };
@@ -62,7 +66,8 @@ define([], function () {
                         this.value = val;
                         this.completed = true;
 
-                        // Notificar a subcriptores
+                        // Notificar a suscriptores
+                        console.log("El Futuro " + this.id + " ha terminado y se comienza a notificar a los suscriptores...");
                         for (var i = 0, len = this.slots.length; i < len; i++) {
                                 this.slots[i](val);
                         }
@@ -82,16 +87,18 @@ define([], function () {
                 logF(Future.unit("Hi now"));
 
                 // delay: (Value, Number) -> Future<Value>
-                Future.delay = function (v, millis) {
+                let delay = function (v, millis) {
                         let f = new Future();
                         setTimeout(function () {
                                 f.complete(v);
                         }, millis);
 
+                        console.log("¡Yo sigo!. 'setTimeout' se ejecuta de forma asíncrona.");
+
                         return f;
                 };
 
-                logF(Future.delay("Hola. Han pasado 5 segundos!", 5000));
+                logF(delay("Hola. Han pasado 5 segundos!", 5000));
 
                 // Actualmente las invocaciones vía AJAX devuelven Promesas. Antes devolvían 'undefined'.
                 // Ejemplo de uso de Futuros en llamadas AJAX:
