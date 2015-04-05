@@ -19,7 +19,7 @@ define([], function () {
                         //this.objDestructuring();
                         //this.arrDestructuring();
                         //this.letItGo();
-                        //this.plucking();s
+                        //this.plucking();
                         //this.getSet();
                         //this.arrowOp();
                         this.future();
@@ -119,8 +119,12 @@ define([], function () {
                 // puede ser recogido (en este caso por la variable 'res') y continuar la ejecución
                 // de la función.
 
-                // TODO: La utilidad de esto parece que es la ejecución de código de forma asíncrona
-                // pero todavía no he entindido cómo.
+                function tardo () {
+                        console.time("timer");
+                        for( let i = 0; i < 1E10; i++) {
+                        };
+                        console.timeEnd("timer");
+                };
                 /*
                 function request(url) {
                         // this is where we're hiding the asynchronicity,
