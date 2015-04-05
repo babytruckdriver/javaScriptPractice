@@ -15,7 +15,7 @@ define([], function () {
                         //this.promiseSinc();
                         //this.promiseAsinc();
                         //this.generatorIterator();
-                        this.generatorAsinc();
+                        //this.generatorAsinc();
                         //this.objDestructuring();
                         //this.arrDestructuring();
                         //this.letItGo();
