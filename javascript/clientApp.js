@@ -1,4 +1,4 @@
-/*jslint browser: true, devel: true, vars: true, indent: 8*/
+/*jslint browser: true, devel: true, vars: true, indent: 8, plusplus: true*/
 /*global define*/
 
 /*
@@ -22,9 +22,95 @@ define([], function () {
                         //this.plucking();s
                         //this.getSet();
                         //this.arrowOp();
+                        this.future();
 
                 }
         };
+
+        App.future = function () {
+
+                // Continuation Passing Style: CPS: Estilo de programación vía CallBacks.
+                // Aquí se explica el concepto de Futuro que permite componer funciones y mantener
+                // el flujo bajo contról (no como en CPS).
+
+                function Future() {
+                        // Lista de subcriptores pendientes
+                        this.slots = [];
+                }
+
+                // Notificar terminación (completion)
+                Future.prototype.ready = function (slot) {
+                        if (this.completed) {
+                                slot(this.value);
+                        } else {
+                                this.slots.push(slot);
+                        }
+                };
+
+                // Simple utilidad de log
+                function logF(f) {
+                        f.ready(v => console.log(v));
+                }
+
+                Future.prototype.complete = function (val) {
+
+                        // Asegura la inmutabilidad
+                        if (this.completed) {
+                                throw Error("No se puede completar un Futuro ya completo!");
+                        }
+
+                        this.value = val;
+                        this.completed = true;
+
+                        // Notificar a subcriptores
+                        for (var i = 0, len = this.slots.length; i < len; i++) {
+                                this.slots[i](val);
+                        }
+
+                        // Liberar todo, no lo necesitaremos más
+                        this.slots = null;
+                };
+
+                // unit : Value -> Future<Value>
+                // NOTE: 'unit' no tiene por qué ser un método de 'Future'...
+                Future.unit = function (val) {
+                        var fut = new Future();
+                        fut.complete(val);
+                        return fut;
+                };
+
+                logF(Future.unit("Hi now"));
+
+                // delay: (Value, Number) -> Future<Value>
+                Future.delay = function (v, millis) {
+                        let f = new Future();
+                        setTimeout(function () {
+                                f.complete(v);
+                        }, millis);
+
+                        return f;
+                };
+
+                logF(Future.delay("Hola. Han pasado 5 segundos!", 5000));
+
+                // Actualmente las invocaciones vía AJAX devuelven Promesas. Antes devolvían 'undefined'.
+                // Ejemplo de uso de Futuros en llamadas AJAX:
+                /*
+                        // llamadaAjax: (String, Object) -> Future<String>
+                        function llamadaAjax (url, opciones) {
+                                var f = new Future();
+                                $.Ajax(url, opciones, function (valorExito) {
+                                        f.complete(valorExito);
+                                });
+
+                                return f;
+                        }
+
+                        //Añado un subcriptor al Futuro
+                        logF(llamadaAjax("http://service", {encoding: "UTF-8"}))
+
+                */
+        },
 
         App.generatorAsinc = function ()  {
 
@@ -44,7 +130,7 @@ define([], function () {
                         makeAjaxCall(url, function (response) {
                                 it.next(response);
                         });
-                        // Note: nothing returned here!
+                        // Nota: nothing returned here!
                 }
 
                 function* main() {
