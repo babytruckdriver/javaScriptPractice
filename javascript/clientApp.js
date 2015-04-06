@@ -102,21 +102,21 @@ define([], function () {
 
                 // Actualmente las invocaciones vía AJAX devuelven Promesas. Antes devolvían 'undefined'.
                 // Ejemplo de uso de Futuros en llamadas AJAX:
-                /*
-                        // llamadaAjax: (String, Object) -> Future<String>
-                        function llamadaAjax (url, opciones) {
-                                var f = new Future();
-                                $.Ajax(url, opciones, function (valorExito) {
-                                        f.complete(valorExito);
-                                });
 
-                                return f;
-                        }
+                // llamadaAjax: (String, Object) -> Future<String>
+                function llamadaAjax (url, opciones) {
+                        var f = new Future();
+                        fetch(url).then(function (valorExito) {
+                                f.complete(valorExito);
+                        });
 
-                        //Añado un subcriptor al Futuro
-                        logF(llamadaAjax("http://service", {encoding: "UTF-8"}))
+                        return f;
+                }
 
-                */
+                //Añado un subcriptor al Futuro
+                logF(llamadaAjax("http://echo.jsontest.com/key/value/one/two", {encoding: "UTF-8"}));
+
+
         },
 
         App.generatorAsinc = function ()  {
