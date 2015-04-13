@@ -72,19 +72,29 @@ define([], function () {
                                 this.slots[i](val);
                         }
 
-                        // Liberar todo, no lo necesitaremos más
+                        // Liberar la lista de suscriptores, no la necesitaremos más
                         this.slots = null;
                 };
 
+                // fmap: (Future<String>, (String -> Number)) -> Future<Number>
+                Future.prototype.fmap = function (fn) {
+                        var f = new Future();
+                        this.ready(function(val) {
+                                f.complete(fn(val));
+                        });
+                        return f;
+                };
+
+/*
                 // unit : Value -> Future<Value>
-                // NOTE: 'unit' no tiene por qué ser un método de 'Future'...
-                Future.unit = function (val) {
+                // Función que solo envuelve un valor en un Futuro completado
+                let unit = function (val) {
                         var fut = new Future();
                         fut.complete(val);
                         return fut;
                 };
 
-                logF(Future.unit("Hi now"));
+                logF(unit("Hi now"));
 
                 // delay: (Value, Number) -> Future<Value>
                 let delay = function (v, millis) {
@@ -99,7 +109,7 @@ define([], function () {
                 };
 
                 logF(delay("Hola. Han pasado 5 segundos!", 5000));
-
+*/
                 // Actualmente las invocaciones vía AJAX devuelven Promesas. Antes devolvían 'undefined'.
                 // Ejemplo de uso de Futuros en llamadas AJAX:
 
@@ -107,14 +117,32 @@ define([], function () {
                 function llamadaAjax (url, opciones) {
                         var f = new Future();
                         fetch(url).then(function (valorExito) {
-                                f.complete(valorExito);
+
+                                // .text() recoge el contenido de la respuesta
+                                return valorExito.text();
+                        }).then(function (text) {
+                                f.complete(JSON.parse(text));
+                        }).catch(function (err) {
+                                console.log("Request failed", err);
                         });
 
                         return f;
                 }
 
-                //Añado un subcriptor al Futuro
-                logF(llamadaAjax("http://echo.jsontest.com/key/value/one/two", {encoding: "UTF-8"}));
+                var ajaxF = llamadaAjax("http://echo.jsontest.com/key/value/one/two", {encoding: "UTF-8"});
+
+                // Añado un subcriptor al Futuro
+                logF(ajaxF);
+
+                //logF(ajaxF.fmap(txt => JSON.stringify(txt).length));
+
+                // lengthF: Future<String> -> Future<Number>
+                function lengthF (strF) {
+                        return strF.fmap(s => JSON.stringify(s).length);
+                }
+
+                logF(lengthF(ajaxF));
+
 
 
         },
@@ -216,10 +244,13 @@ define([], function () {
                         }, 3000);
                 }).then(function () {
                         console.log(">>Segunda Acción: (también tardo 2 segundos en acabar)");
+                        throw Error ("Ay! Que daño!");
                         window.setTimeout(function () {
                                 console.log(">>Segunda Acción: Acabé!")
                                 return true;
                         }, 2000);
+                }).catch(function (err) {
+                        console.log("Se ha producido un error en alguna de las promesas: " + err);
                 });
 
                 console.log("Finaliza la ejecucióndel método y retorna.");
@@ -254,8 +285,8 @@ define([], function () {
                         return valorJSON;
                 }).then(function(valor) {
                         console.log("->Ahora el valor está en formato JSON!!");
-                }).catch(function () {
-                        console.log("->Parece ser que el valor no era JSON :(");
+                }).catch(function (err) {
+                        console.log("->Parece ser que el valor no era JSON :( " + err);
                 });
 
                 console.log("Finaliza la ejecucióndel método y retorna.");
@@ -332,7 +363,7 @@ define([], function () {
 
                 // const
                 // =====
-                const pi = 3.14
+                const pi = 3.14;
                         //pi = 5.6; //-> Error! Es constante merluzo
 
                 const piObj = {
