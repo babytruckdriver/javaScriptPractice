@@ -22,10 +22,44 @@ define([], function () {
                         //this.plucking();
                         //this.getSet();
                         //this.arrowOp();
-                        this.future();
+                        //this.future();
+                        this.fetchTest();
 
                 }
         };
+
+        App.fetchTest = function () {
+                console.log("Try Fetch API.");
+
+                let processStatus = function (response) {
+                        if(response.status === 200) {
+                                return Promise.resolve(response);
+                        } else {
+                                return Promise.reject(Error (response.statusText));
+                        }
+                }
+
+                let fetchP = fetch("http://echo.jsontest.com/key/value/one/two", {encoding: "UTF-8"});
+                fetchP.then(processStatus)
+                      .then(function (result) {
+
+                        // No es posible en este punto recoger la información del resultado.
+                        // FIX: No sé por qué pero hay que extraerla y en un sigueinte 'then' consumirla
+
+                        console.log("Fetch ok. Transform and Return.");
+                        return result.text();
+                      })
+                      .then(function (value) {
+                        console.log("Fetch result: " + value);
+                      })
+                      .catch(function (err) {
+
+                        // Aquí se captura el error proviniente de 'processStatus'
+                        console.log("Fetching error: " + err);
+                      });
+
+                console.log("Fetch API finished");
+        },
 
         App.future = function () {
 
@@ -232,28 +266,28 @@ define([], function () {
 
                 // Promesas: enlazar promesas de forma asíncrona (evaluarlas a la vez) vía secuencias
 
-                console.log("Comienza la ejecución del método.");
+                console.log("}}Comienza la ejecución del método.");
 
                 var sequence = Promise.resolve();
 
                 sequence.then(function() {
-                        console.log(">>Primera Acción: (tardo 3 segundos en terminar.");
+                        console.log("  >>Primera Acción: (tardo 3 segundos en terminar)");
                         window.setTimeout(function () {
-                                console.log(">>Primera Acción: Acabé!")
+                                console.log("    >>Primera Acción: Acabé!")
                                 return true;
                         }, 3000);
                 }).then(function () {
-                        console.log(">>Segunda Acción: (también tardo 2 segundos en acabar)");
+                        console.log("  >>Segunda Acción: (también tardo 2 segundos en acabar)");
                         throw Error ("Ay! Que daño!");
                         window.setTimeout(function () {
-                                console.log(">>Segunda Acción: Acabé!")
+                                console.log("    >>Segunda Acción: Acabé!")
                                 return true;
                         }, 2000);
                 }).catch(function (err) {
                         console.log("Se ha producido un error en alguna de las promesas: " + err);
                 });
 
-                console.log("Finaliza la ejecucióndel método y retorna.");
+                console.log("}}Finaliza la ejecucióndel método y retorna.");
                 return true;
         };
 
@@ -263,33 +297,33 @@ define([], function () {
                 // Las APIS modernas ya trabajan con promesas, por lo que crear una a mano, como en este ejemplo
                 // es raro.
 
-                console.log("Comienza la ejecución del método.");
+                console.log("}}Comienza la ejecución del método.");
 
                 var sincProm = new Promise (function (resolve, reject) {
-                        console.log(">> Realizando trabajo prometido");
+                        console.log("    >>Realizando trabajo prometido");
 
                         if(true) {
 
                                 window.setTimeout(function () {
-                                        console.log(">>Trabajo realizado. Resuelvo la promesa.");
+                                        console.log("    >>Trabajo realizado. Resuelvo la promesa.");
                                         resolve("{\"status\": \"Promesa cumplida\"}");
                                 }, 3000);
                         } else {
-                                 reject(new Error("Aunque sea un error aquí está lo prometido."));
+                                 reject(new Error("    Aunque sea un error aquí está lo prometido."));
                         }
                 });
 
                 sincProm.then(function(valor) {
-                        console.log("->Esto retorna la promesa (cuando le ha dado la gana): " + valor);
+                        console.log("  ->Esto retorna la promesa (cuando le ha dado la gana): " + valor);
                         var valorJSON = JSON.parse(valor);
                         return valorJSON;
                 }).then(function(valor) {
-                        console.log("->Ahora el valor está en formato JSON!!");
+                        console.log("  ->Ahora el valor está en formato JSON!!");
                 }).catch(function (err) {
-                        console.log("->Parece ser que el valor no era JSON :( " + err);
+                        console.log("  ->Parece ser que el valor no era JSON :( " + err);
                 });
 
-                console.log("Finaliza la ejecucióndel método y retorna.");
+                console.log("}}Finaliza la ejecución del método y retorna.");
                 return true;
         };
 
