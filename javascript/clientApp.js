@@ -11,7 +11,7 @@ define([], function () {
         "use strict";
 
         var App = {
-                init: function () {
+                init() {
                         //this.promiseSinc();
                         //this.promiseAsinc();
                         //this.generatorIterator();
@@ -23,8 +23,24 @@ define([], function () {
                         //this.getSet();
                         //this.arrowOp();
                         //this.future();
-                        this.fetchTest();
+                        //this.fetchTest();
+                        this.iterators();
 
+                }
+        };
+
+        App.iterators = function () {
+                let arr = ['a', 'b', 'c'];
+                let iter = arr[Symbol.iterator]();
+
+                // Si este conjunto de console.log's "gastan" el iterador el bucle 'for of' no iterará nada (si usa iter)
+                console.log(iter.next());
+                console.log(iter.next());
+                console.log(iter.next());
+                console.log(iter.next());
+
+                for (let item of arr) {
+                console.log(">> " + item);
                 }
         };
 
@@ -59,127 +75,7 @@ define([], function () {
                       });
 
                 console.log("Fetch API finished");
-        },
-
-        App.future = function () {
-
-                // Continuation Passing Style: CPS: Estilo de programación vía CallBacks.
-                // Aquí se explica el concepto de Futuro que permite componer funciones y mantener
-                // el flujo bajo contról (no como en CPS).
-
-                function Future() {
-                        // Lista de subcriptores pendientes
-                        this.slots = [];
-                        this.id = String.prototype.slice.call(Date.now(), 11, 13);
-                        console.log("Creado el Futuro " + this.id);
-                }
-
-                // Agregar suscriptores a los que notificar cuando se resuelva el Futuro
-                Future.prototype.ready = function (slot) {
-                        if (this.completed) {
-                                console.log("El Futuro está completo. No hace falta suscribirse. Ejecuto función que pedía la suscripción.");
-                                slot(this.value);
-                        } else {
-                                console.log("Suscripción añadida al Futuro: " +  this.id);
-                                this.slots.push(slot);
-                        }
-                };
-
-                // Simple utilidad de log
-                function logF(f) {
-                        f.ready(v => console.log(v));
-                }
-
-                Future.prototype.complete = function (val) {
-
-                        // Asegura la inmutabilidad
-                        if (this.completed) {
-                                throw Error("No se puede completar un Futuro ya completo!");
-                        }
-
-                        this.value = val;
-                        this.completed = true;
-
-                        // Notificar a suscriptores
-                        console.log("El Futuro " + this.id + " ha terminado y se comienza a notificar a los suscriptores...");
-                        for (var i = 0, len = this.slots.length; i < len; i++) {
-                                this.slots[i](val);
-                        }
-
-                        // Liberar la lista de suscriptores, no la necesitaremos más
-                        this.slots = null;
-                };
-
-                // fmap: (Future<String>, (String -> Number)) -> Future<Number>
-                Future.prototype.fmap = function (fn) {
-                        var f = new Future();
-                        this.ready(function(val) {
-                                f.complete(fn(val));
-                        });
-                        return f;
-                };
-
-/*
-                // unit : Value -> Future<Value>
-                // Función que solo envuelve un valor en un Futuro completado
-                let unit = function (val) {
-                        var fut = new Future();
-                        fut.complete(val);
-                        return fut;
-                };
-
-                logF(unit("Hi now"));
-
-                // delay: (Value, Number) -> Future<Value>
-                let delay = function (v, millis) {
-                        let f = new Future();
-                        setTimeout(function () {
-                                f.complete(v);
-                        }, millis);
-
-                        console.log("¡Yo sigo!. 'setTimeout' se ejecuta de forma asíncrona.");
-
-                        return f;
-                };
-
-                logF(delay("Hola. Han pasado 5 segundos!", 5000));
-*/
-                // Actualmente las invocaciones vía AJAX devuelven Promesas. Antes devolvían 'undefined'.
-                // Ejemplo de uso de Futuros en llamadas AJAX:
-
-                // llamadaAjax: (String, Object) -> Future<String>
-                function llamadaAjax (url, opciones) {
-                        var f = new Future();
-                        fetch(url).then(function (valorExito) {
-
-                                // .text() recoge el contenido de la respuesta
-                                return valorExito.text();
-                        }).then(function (text) {
-                                f.complete(JSON.parse(text));
-                        }).catch(function (err) {
-                                console.log("Request failed", err);
-                        });
-
-                        return f;
-                }
-
-                var ajaxF = llamadaAjax("http://echo.jsontest.com/key/value/one/two", {encoding: "UTF-8"});
-
-                // Añado un subcriptor al Futuro
-                logF(ajaxF);
-
-                //logF(ajaxF.fmap(txt => JSON.stringify(txt).length));
-
-                // lengthF: Future<String> -> Future<Number>
-                function lengthF (strF) {
-                        return strF.fmap(s => JSON.stringify(s).length);
-                }
-
-                logF(lengthF(ajaxF));
-
-
-
-        },
+        };
 
         App.generatorAsinc = function ()  {
 
@@ -188,37 +84,19 @@ define([], function () {
                 // puede ser recogido (en este caso por la variable 'res') y continuar la ejecución
                 // de la función.
 
-                function tardo () {
-                        console.time("timer");
-                        for( let i = 0; i < 1E10; i++) {
-                        };
-                        console.timeEnd("timer");
-                };
-                /*
-                function request(url) {
-                        // this is where we're hiding the asynchronicity,
-                        // away from the main code of our generator
-                        // `it.next(..)` is the generator's iterator-resume
-                        // call
-                        makeAjaxCall(url, function (response) {
-                                it.next(response);
+                var myFoo;
+
+                function *foo() {
+                        console.log("Before the asynchronous task");
+                        yield fetch("http://echo.jsontest.com/name/samuel/children/1").then(function() {
+                                myFoo.next();
                         });
-                        // Nota: nothing returned here!
+                        console.log("After de asynchronous task has completed");
                 }
 
-                function* main() {
-                        var result1 =
-                                yield request("http://some.url.1");
-                        var data = JSON.parse(result1);
+                myFoo = foo();
+                myFoo.next();
 
-                        var result2 =
-                                yield request("http://some.url.2?id=" + data.id);
-                        var resp = JSON.parse(result2);
-                        console.log("The value you asked for: " + resp.value);
-                }
-
-                var it = main();
-                it.next(); // get it all started*/
 
         };
 
@@ -226,7 +104,7 @@ define([], function () {
 
                 // Generadores: Funciones que devuelven vía 'yield' y quedan en ese punto
                 // en Standby hasta que se vuelve a invocar en un 'for of' o .next()
-                // Esto posibilita la creación de lista muy grandes o potencialmente infinitas.
+                // Esto posibilita la creación de listas muy grandes o potencialmente infinitas.
 
                 var idMaker = function* (n) {
                         var i = 0;
@@ -273,14 +151,14 @@ define([], function () {
                 sequence.then(function() {
                         console.log("  >>Primera Acción: (tardo 3 segundos en terminar)");
                         window.setTimeout(function () {
-                                console.log("    >>Primera Acción: Acabé!")
+                                console.log("    >>Primera Acción: Acabé!");
                                 return true;
                         }, 3000);
                 }).then(function () {
                         console.log("  >>Segunda Acción: (también tardo 2 segundos en acabar)");
                         throw Error ("Ay! Que daño!");
                         window.setTimeout(function () {
-                                console.log("    >>Segunda Acción: Acabé!")
+                                console.log("    >>Segunda Acción: Acabé!");
                                 return true;
                         }, 2000);
                 }).catch(function (err) {
