@@ -33,15 +33,57 @@ define([], function () {
                 let arr = ['a', 'b', 'c'];
                 let iter = arr[Symbol.iterator]();
 
-                // Si este conjunto de console.log's "gastan" el iterador el bucle 'for of' no iterará nada (si usa iter)
+                // Si este conjunto de console.log's "gastan" el iterador 'iter' un bucle posterior 'for of' no iterará nada
+                console.log(iter.next().value);
                 console.log(iter.next());
-                console.log(iter.next());
-                console.log(iter.next());
+                console.log(iter.next().value);
                 console.log(iter.next());
 
                 for (let item of arr) {
-                console.log(">> " + item);
+                        console.log(">> " + item);
                 }
+
+                let cadena = "Ey! I'm a String!";
+
+                for (let letter of cadena) {
+                        console.log("->String->" + letter);
+                }
+
+                // La iteración devuelve un array con la clave y el valor.
+                let mapa = new Map().set("uno", 1).set(2, "soy un dos");
+                let mapaIterValues = mapa.values();
+                let mapaIterKeys = mapa.keys();
+
+                console.log("------");
+                for( let item of mapaIterValues) {
+                        console.log("->" + item);
+                }
+                console.log("------");
+                for( let item of mapaIterKeys) {
+                        console.log("->" + item);
+                }
+                console.log("------");
+
+                for (let item of mapa) {
+                        console.log(item);
+                }
+
+
+                // Operador Spread: Deconstruye un array en sus elementos
+                // Ej: let arr = [2,3];
+                //     ler arr2 = [1, ...arr, 4];
+                (function (a, b) {
+                        console.log(">>a: " + a + " >>b: " + b);
+                })(...[2,3])
+
+                // Un 'Set' es como un ArrayList de Java pero cuyos elementos no puden estar repetidos
+                let aSet = new Set(arr); //new Set().add("Sam").add(2).add(2); // Solo añade un 2
+
+                for (let item of aSet) {
+                        console.log("aSet: " + item);
+                }
+
+
         };
 
         App.fetchTest = function () {
