@@ -24,9 +24,25 @@ define([], function () {
                         //this.arrowOp();
                         //this.future();
                         //this.fetchTest();
-                        this.iterators();
+                        //this.iterators();
+                        this.strings();
 
                 }
+        };
+
+        App.strings = function () {
+                let name = "Icíar";
+                let age = 2;
+                let saludo = `Hola ${name}! Tienes ${age} años!`;
+
+                console.log(saludo + ` ${age}!!`);
+
+                let severalLines = `
+                        This is a test
+                        with several lines
+                        more than ${2}
+                        `;
+                console.log(severalLines);
         };
 
         App.iterators = function () {
