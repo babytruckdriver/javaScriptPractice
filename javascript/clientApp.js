@@ -43,11 +43,15 @@ define([], function () {
                         console.log(">> " + item);
                 }
 
+                // -----------------------------------------------
+
                 let cadena = "Ey! I'm a String!";
 
                 for (let letter of cadena) {
                         console.log("->String->" + letter);
                 }
+
+                // -----------------------------------------------
 
                 // La iteración devuelve un array con la clave y el valor.
                 let mapa = new Map().set("uno", 1).set(2, "soy un dos");
@@ -56,18 +60,27 @@ define([], function () {
 
                 console.log("------");
                 for( let item of mapaIterValues) {
-                        console.log("->" + item);
+                        console.log("->mapaIterValues: " + item);
                 }
                 console.log("------");
                 for( let item of mapaIterKeys) {
-                        console.log("->" + item);
+                        console.log("->mapaIterKeys: " + item);
                 }
                 console.log("------");
 
-                for (let item of mapa) {
-                        console.log(item);
+                // [key, value] = Destructuring pattern!
+                for (let [key, value] of mapa) {
+                        console.log("->mapa => key: " + key + " => value: " + value);
                 }
 
+                // Y lo mismo para Arrays normales (que por defecto no tienen el índice)
+                let arr2 = ['a', 'b', 'c'];
+
+                for (let [k,v] of arr2.entries()) {
+                        console.log(`key = ${k}, value = ${v}`);
+                }
+
+                // -----------------------------------------------
 
                 // Operador Spread: Deconstruye un array en sus elementos
                 // Ej: let arr = [2,3];
@@ -76,6 +89,8 @@ define([], function () {
                         console.log(">>a: " + a + " >>b: " + b);
                 })(...[2,3])
 
+                // -----------------------------------------------
+
                 // Un 'Set' es como un ArrayList de Java pero cuyos elementos no puden estar repetidos
                 let aSet = new Set(arr); //new Set().add("Sam").add(2).add(2); // Solo añade un 2
 
@@ -83,6 +98,30 @@ define([], function () {
                         console.log("aSet: " + item);
                 }
 
+                // -----------------------------------------------
+
+                let arrayLike = {length: 2, 0:'a', 1: 'b'};
+
+                console.log(Array.from(arrayLike)); // length: 2 no lo tiene en cuenta
+                console.log(Array.from("Icíar"));
+                console.log(Array.from([1, 2, 3], x => x*2)); //[2, 4, 6]
+
+                // Esto no lo entiendo... [0,1,2,3,4]
+                console.log(Array.from({length: 5}, (v,k) => k));
+
+                // -----------------------------------------------
+
+                let obj = {
+                        name: "Icíar",
+                        age: 2,
+                        sayHello () {console.log("Hello " + this.name + "!");}
+                };
+
+                for (obj.name of ["Samuel", "Cristina"]) {
+                        console.log(obj.sayHello());
+                }
+
+                // -----------------------------------------------
 
         };
 
