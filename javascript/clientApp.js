@@ -1,4 +1,5 @@
-/*jslint browser: true, devel: true, vars: true, indent: 8, plusplus: true*/
+/*jslint browser: true, devel: true, indent: 8, plusplus: true */
+/*eslint-env amd, browser */
 /*global define*/
 
 /*
@@ -10,7 +11,7 @@
 define([], function () {
         "use strict";
 
-        var App = {
+        var app = {
                 init() {
                         //this.promiseSinc();
                         //this.promiseAsinc();
@@ -26,11 +27,10 @@ define([], function () {
                         //this.fetchTest();
                         //this.iterators();
                         this.strings();
-
                 }
         };
 
-        App.strings = function () {
+        app.strings = function () {
                 let name = "Icíar";
                 let age = 2;
                 let saludo = `Hola ${name}! Tienes ${age} años!`;
@@ -40,16 +40,17 @@ define([], function () {
                 let severalLines = `
                         This is a test
                         with several lines
-                        more than ${2}
+                        more than ${2 + 2}
                         `;
                 console.log(severalLines);
         };
 
-        App.iterators = function () {
-                let arr = ['a', 'b', 'c'];
+        app.iterators = function () {
+                let arr = ["a", "b", "c"];
                 let iter = arr[Symbol.iterator]();
 
-                // Si este conjunto de console.log's "gastan" el iterador 'iter' un bucle posterior 'for of' no iterará nada
+                // Si este conjunto de console.log's "gastan" el iterador 'iter' un bucle
+                //posterior 'for of' no iterará nada
                 console.log(iter.next().value);
                 console.log(iter.next());
                 console.log(iter.next().value);
@@ -75,11 +76,11 @@ define([], function () {
                 let mapaIterKeys = mapa.keys();
 
                 console.log("------");
-                for( let item of mapaIterValues) {
+                for (let item of mapaIterValues) {
                         console.log("->mapaIterValues: " + item);
                 }
                 console.log("------");
-                for( let item of mapaIterKeys) {
+                for (let item of mapaIterKeys) {
                         console.log("->mapaIterKeys: " + item);
                 }
                 console.log("------");
@@ -90,9 +91,9 @@ define([], function () {
                 }
 
                 // Y lo mismo para Arrays normales (que por defecto no tienen el índice)
-                let arr2 = ['a', 'b', 'c'];
+                let arr2 = ["a", "b", "c"];
 
-                for (let [k,v] of arr2.entries()) {
+                for (let [k, v] of arr2.entries()) {
                         console.log(`key = ${k}, value = ${v}`);
                 }
 
@@ -103,7 +104,7 @@ define([], function () {
                 //     ler arr2 = [1, ...arr, 4];
                 (function (a, b) {
                         console.log(">>a: " + a + " >>b: " + b);
-                })(...[2,3])
+                }(...[2, 3]));
 
                 // -----------------------------------------------
 
@@ -116,21 +117,21 @@ define([], function () {
 
                 // -----------------------------------------------
 
-                let arrayLike = {length: 2, 0:'a', 1: 'b'};
+                let arrayLike = {length: 2, 0: "a", 1: "b"};
 
                 console.log(Array.from(arrayLike)); // length: 2 no lo tiene en cuenta
                 console.log(Array.from("Icíar"));
-                console.log(Array.from([1, 2, 3], x => x*2)); //[2, 4, 6]
+                console.log(Array.from([1, 2, 3], x => x * 2)); //[2, 4, 6]
 
                 // Esto no lo entiendo... [0,1,2,3,4]
-                console.log(Array.from({length: 5}, (v,k) => k));
+                console.log(Array.from({length: 5}, (v, k) => k));
 
                 // -----------------------------------------------
 
                 let obj = {
                         name: "Icíar",
                         age: 2,
-                        sayHello () {console.log("Hello " + this.name + "!");}
+                        sayHello() {console.log("Hello " + this.name + "!");}
                 };
 
                 for (obj.name of ["Samuel", "Cristina"]) {
@@ -141,16 +142,16 @@ define([], function () {
 
         };
 
-        App.fetchTest = function () {
+        app.fetchTest = function () {
                 console.log("Try Fetch API.");
 
                 let processStatus = function (response) {
-                        if(response.status === 200) {
+                        if (response.status === 200) {
                                 return Promise.resolve(response);
-                        } else {
-                                return Promise.reject(Error (response.statusText));
                         }
-                }
+
+                        return Promise.reject(Error(response.statusText));
+                };
 
                 let fetchP = fetch("http://echo.jsontest.com/key/value/one/two", {encoding: "UTF-8"});
                 fetchP.then(processStatus)
@@ -159,22 +160,22 @@ define([], function () {
                         // No es posible en este punto recoger la información del resultado.
                         // FIX: No sé por qué pero hay que extraerla y en un sigueinte 'then' consumirla
 
-                        console.log("Fetch ok. Transform and Return.");
-                        return result.text();
+                              console.log("Fetch ok. Transform and Return.");
+                              return result.text();
                       })
                       .then(function (value) {
-                        console.log("Fetch result: " + value);
+                              console.log("Fetch result: " + value);
                       })
                       .catch(function (err) {
 
-                        // Aquí se captura el error proviniente de 'processStatus'
-                        console.log("Fetching error: " + err);
+                              // Aquí se captura el error proviniente de 'processStatus'
+                              console.log("Fetching error: " + err);
                       });
 
                 console.log("Fetch API finished");
         };
 
-        App.generatorAsinc = function ()  {
+        app.generatorAsinc = function () {
 
                 // Generadores: Una vez devuelto el control vía yield a la parte de código desde
                 // donde se invocó el .next(), el siguiente .next(value) puede enviar un valor que
@@ -185,7 +186,7 @@ define([], function () {
 
                 function *foo() {
                         console.log("Before the asynchronous task");
-                        yield fetch("http://echo.jsontest.com/name/samuel/children/1").then(function() {
+                        yield fetch("http://echo.jsontest.com/name/samuel/children/1").then(function () {
                                 myFoo.next();
                         });
                         console.log("After de asynchronous task has completed");
@@ -197,18 +198,18 @@ define([], function () {
 
         };
 
-        App.generatorIterator = function () {
+        app.generatorIterator = function () {
 
                 // Generadores: Funciones que devuelven vía 'yield' y quedan en ese punto
                 // en Standby hasta que se vuelve a invocar en un 'for of' o .next()
                 // Esto posibilita la creación de listas muy grandes o potencialmente infinitas.
 
-                var idMaker = function* (n) {
+                var idMaker = function *(n) {
                         var i = 0;
 
                         // FIX: ¿De qué manera se prodría mejorar este código para no repetir dos veces
                         // casi exactamente el mimso bucle
-                        if(n) {
+                        if (n) {
                                 while (i < n) {
                                         yield i;
                                         i++;
@@ -222,7 +223,9 @@ define([], function () {
 
                 };
 
-                for (var id of idMaker(3)) {
+                let id;
+
+                for (id of idMaker(3)) {
                         console.log(id);
                 }
 
@@ -237,7 +240,7 @@ define([], function () {
 
         };
 
-        App.promiseAsinc = function () {
+        app.promiseAsinc = function () {
 
                 // Promesas: enlazar promesas de forma asíncrona (evaluarlas a la vez) vía secuencias
 
@@ -245,7 +248,7 @@ define([], function () {
 
                 var sequence = Promise.resolve();
 
-                sequence.then(function() {
+                sequence.then(function () {
                         console.log("  >>Primera Acción: (tardo 3 segundos en terminar)");
                         window.setTimeout(function () {
                                 console.log("    >>Primera Acción: Acabé!");
@@ -253,7 +256,7 @@ define([], function () {
                         }, 3000);
                 }).then(function () {
                         console.log("  >>Segunda Acción: (también tardo 2 segundos en acabar)");
-                        throw Error ("Ay! Que daño!");
+                        throw Error("Ay! Que daño!");
                         window.setTimeout(function () {
                                 console.log("    >>Segunda Acción: Acabé!");
                                 return true;
@@ -266,7 +269,7 @@ define([], function () {
                 return true;
         };
 
-        App.promiseSinc = function () {
+        app.promiseSinc = function () {
 
                 // Promesas: enlazar promesas de forma síncrona y recoger errores
                 // Las APIS modernas ya trabajan con promesas, por lo que crear una a mano, como en este ejemplo
@@ -274,25 +277,25 @@ define([], function () {
 
                 console.log("}}Comienza la ejecución del método.");
 
-                var sincProm = new Promise (function (resolve, reject) {
+                var sincProm = new Promise(function (resolve, reject) {
                         console.log("    >>Realizando trabajo prometido");
 
-                        if(true) {
+                        if (true) {
 
                                 window.setTimeout(function () {
                                         console.log("    >>Trabajo realizado. Resuelvo la promesa.");
                                         resolve("{\"status\": \"Promesa cumplida\"}");
                                 }, 3000);
                         } else {
-                                 reject(new Error("    Aunque sea un error aquí está lo prometido."));
+                                reject(new Error("    Aunque sea un error aquí está lo prometido."));
                         }
                 });
 
-                sincProm.then(function(valor) {
+                sincProm.then(function (valor) {
                         console.log("  ->Esto retorna la promesa (cuando le ha dado la gana): " + valor);
                         var valorJSON = JSON.parse(valor);
                         return valorJSON;
-                }).then(function(valor) {
+                }).then(function (valor) {
                         console.log("  ->Ahora el valor está en formato JSON!!");
                 }).catch(function (err) {
                         console.log("  ->Parece ser que el valor no era JSON :( " + err);
@@ -302,19 +305,19 @@ define([], function () {
                 return true;
         };
 
-        App.arrowOp = function () {
+        app.arrowOp = function () {
 
                 // Este es un método para crear funciones anónimas pequeñas.
                 // (x) crea una función anónima con un parámetro.
                 // => retorna la computación de la expresión siguiente
 
                 var arr = [1, 2, 3, 4, 5, 6];
-                var trans = arr.map((el) => 2*el);
+                var trans = arr.map((el) => 2 * el);
 
                 console.log(trans);
         };
 
-        App.getSet = function () {
+        app.getSet = function () {
 
                 // Crear métodos getter y setter de las propiedades de un objeto
 
@@ -328,7 +331,7 @@ define([], function () {
 
         };
 
-        App.plucking = function () {
+        app.plucking = function () {
 
                 // Retornar un array con la propiedad seleccionada de los objetos de un array
 
@@ -338,7 +341,7 @@ define([], function () {
                 // De esta nueva forma se traspasa lógica a los argumentos usando destructuring
 
                 var pluck = function (arr, prop) {
-                        return arr.map(function ({[prop]: value} ) {
+                        return arr.map(function ({[prop]: value}) {
 
                                 return value;
                         });
@@ -357,7 +360,7 @@ define([], function () {
 
         };
 
-        App.letItGo = function () {
+        app.letItGo = function () {
 
                 // Sustituyendo a var: let y const
 
@@ -378,7 +381,7 @@ define([], function () {
                 const piObj = {
                         name: "pi",
                         value: 3.14
-                }
+                };
 
                 //piObj = {} //-> Error!
                 piObj.value = 4.5;
@@ -387,7 +390,7 @@ define([], function () {
 
         };
 
-        App.arrDestructuring = function () {
+        app.arrDestructuring = function () {
                 // Destructuring
                 // =============
                 // Crear variables con el contenido de un array
@@ -416,13 +419,13 @@ define([], function () {
 
         };
 
-        App.objDestructuring = function () {
+        app.objDestructuring = function () {
                 // Destructuring
                 // =============
                 // Crear variables de propiedades de un objecto
 
                 var obj = {
-                        theName: 'Sam',
+                        theName: "Sam",
                         theAge: 32
                 };
                 var {
@@ -435,7 +438,7 @@ define([], function () {
                 // Crear variables con propiedades profundas de un objeto
                 var json = {
                         person: {
-                                name: 'Icíar',
+                                name: "Icíar",
                                 age: 1
                         }
                 };
@@ -457,20 +460,16 @@ define([], function () {
                                 job: "dev",
                                 name,
                                 lang
-                        }
+                        };
                 };
 
                 console.log(newDev("Cris", "ES").lang);
         };
 
 
-
-
-
-
         //Se exporta la funcionalidad que se desea exponer
         return {
-                "App": App
+                App: app
         };
 
 }); //Fin requirejs
