@@ -24,17 +24,55 @@ define([], function () {
         }
       };
 
+      // ***********************************************************
+      // Inheritance by delegation
+      // Inheritance by concatenation
+      // Functional inheritance
+      // ***********************************************************
 
-      let mouse = Object.assign(Object.create(animal), {
+      // Inheritance by concatenation
+      let mouse = Object.assign({}, animal, {
         furColor: "brown",
         legs: 4,
         tail: "long, skinny"
       });
 
-
       console.log(mouse.describe());
+      animal.animalType = "insect";
+      console.log(mouse.describe()); //mouse.animalType doesn't change
 
-      console.log(mouse.describe());
+      // Inheritance by delegation
+      // The result object has its props and the props of the parent (no a copy of the props)
+      // 'fly' is just a new name for the extended animal object.
+      // For this kind of inheritance you need the "new" or "Object.create"
+
+      let fly = Object.assign(Object.create(animal), {
+        furColor: "black",
+        legs: 4,
+        tail: "none"
+      });
+
+      console.log(fly.describe());
+      animal.animalType = "amphibian";
+      console.log(fly.describe()); // fly.animalType has changed
+
+      // Functional inheritance
+      // You need create the a function factory and add new properties
+
+      let flyFactory = function () {
+        return {
+          furColor: "white",
+          legs: 6
+        };
+      };
+
+      let aFly = flyFactory();
+      aFly.animalType = "insect";
+      aFly.describe = function () {
+        return `A ${this.animalType}, with ${this.legs} legs.`;
+      };
+
+      console.log(aFly.describe());
     }
   };
 
